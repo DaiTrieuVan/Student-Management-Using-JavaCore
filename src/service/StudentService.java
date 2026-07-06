@@ -59,4 +59,10 @@ public class StudentService implements IStudentService{
                 .filter(s->s.getName().toLowerCase().contains(name.toLowerCase()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public boolean existByMSV(String msv) {
+        return studentRepository.findAll().stream()
+                .anyMatch(s -> s.getMsv().equalsIgnoreCase(msv));
+    }
 }

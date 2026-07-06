@@ -10,4 +10,5 @@ public interface IStudentService {
     void update(Student student);
     void delete(String msv);
     List<Student> findByName(String name);
+    boolean existByMSV (String msv);
 }

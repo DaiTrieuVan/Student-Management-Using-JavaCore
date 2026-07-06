@@ -23,4 +23,7 @@ public class StudentController {
     public List<Student> findStudentsbyName(String name){
         return studentService.findByName(name);
     }
+    public boolean existByMSV(String msv){
+        return studentService.existByMSV(msv);
+    }
 }

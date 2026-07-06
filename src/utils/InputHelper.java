@@ -25,10 +25,8 @@ public class InputHelper {
                 if(Objects.equals(msv, "q")){
                     return null;
                 }
-                List<Student> students = studentController.getAllStudents();
-                for(Student s:students){
-                    if((s.getMsv().equalsIgnoreCase(msv))) throw  new IllegalArgumentException("Ma sinh vien da ton tai !!!");
-                    if(!(validator.checkMSV(msv))) throw new IllegalArgumentException("Ma sinh vien sai dinh dang, VD: SV001... !!!");
+                if(!(validator.checkMSV(msv))){
+                    throw new IllegalArgumentException("Ma sinh vien khong hop le !!!");
                 }
                 check = false;
 

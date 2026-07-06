@@ -72,6 +72,9 @@ public class StudentView {
             if(msv == null){
                 return;
             }
+            if(!(studentController.existByMSV(msv))){
+                throw new IllegalArgumentException("Ma sinh vien da ton tai !!!");
+            }
             student.setMsv(msv);
 
 
@@ -131,22 +134,57 @@ public class StudentView {
     public void updateInforStudent(){
         try{
             Student student = new Student();
-            System.out.print("Nhap ma sinh vien: ");
-            student.setMsv(sc.nextLine());
-            System.out.print("Nhap ten sinh vien: ");
-            student.setName(sc.nextLine());
-            System.out.print("Nhap gioi tinh: ");
-            student.setGender(sc.nextLine());
-            System.out.print("Nhap thang/nam/sinh: ");
-            student.setDob(LocalDate.parse(sc.nextLine(), formatter));
+            String msv = inputHelper.nhapMSV();
+            if(msv == null){
+                return;
+            }
+
+            student.setMsv(msv);
+
+
+            //Nhap ten
+            String name = inputHelper.nhapTen();
+            if(name == null){
+                return;
+            }
+            student.setName(name);
+
+            //Nhap gioi tinh
+            String gender = inputHelper.nhapGioiTinh();
+            if(gender == null) return;
+            student.setGender(gender);
+
+            //Nhap ngay sinh
+            LocalDate dob = inputHelper.nhapDob();
+            if(dob == null){
+                return;
+            }
+            student.setDob(dob);
+
             System.out.print("Nhap chuyen nganh: ");
             student.setMajor(sc.nextLine());
-            System.out.print("Nhap gpa: ");
-            student.setGpa(Double.parseDouble(sc.nextLine()));
-            System.out.print("Nhap email: ");
-            student.setEmail(sc.nextLine());
-            System.out.print("Nhap so dien thoai: ");
-            student.setPhone(sc.nextLine());
+
+
+            Double gpa = inputHelper.nhapGPA(); //Nhap GPA
+            if(gpa == null){
+                return;
+            }
+            student.setGpa(gpa);
+
+            //Nhap Email
+            String email = inputHelper.nhapEmail();
+            if(email == null){
+                return;
+            }
+            student.setEmail(email);
+
+
+            //Nhap Phone
+            String phone = inputHelper.nhapPhone();
+            if(phone == null){
+                return;
+            }
+            student.setPhone(phone);
             studentController.updateStudent(student);
             System.out.println("Cap nhat thong tin sinh vien thanh cong !!!");
         } catch (Exception e) {
