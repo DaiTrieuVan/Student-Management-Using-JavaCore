@@ -1,31 +1,31 @@
 package utils;
 
-import controller.StudentController;
-import model.Student;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class InputHelper {
-    final StudentController studentController = new StudentController();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
     final Scanner sc = new Scanner(System.in);
     Validator validator = new Validator();
 
-    public String nhapMSV(){
+    public String nhapMSV(String oldMsv) {
         String msv = "";
         boolean check = true;
-        while(check){
-            try{
-                System.out.print("Nhap ma sinh vien (nhap q de thoat): ");
+        if (oldMsv == null || oldMsv.isEmpty()) {
+            System.out.print("Nhap ma sinh vien (nhap q de thoat): ");
+        } else {
+            System.out.print("Nhap ma sinh vien moi (Enter de giu nguyen [" + oldMsv + "], q de thoat: ");
+        }
+        while (check) {
+            try {
                 msv = sc.nextLine();
-                if(Objects.equals(msv, "q")){
+                if (Objects.equals(msv, "q")) {
                     return null;
-                }
-                if(!(validator.checkMSV(msv))){
+                } else if (msv.isEmpty()) return oldMsv;
+                if (!(validator.checkMSV(msv))) {
                     throw new IllegalArgumentException("Ma sinh vien khong hop le !!!");
                 }
                 check = false;
@@ -38,15 +38,22 @@ public class InputHelper {
         return msv;
     }
 
-    public String nhapTen(){
+    public String nhapTen(String oldName) {
         String name = "";
         boolean check = true;
-        while (check){
-            try{
-                System.out.print("Nhap ten (nhap q de thoat): ");
+        while (check) {
+            try {
+                if (oldName == null || oldName.isEmpty()) {
+                    System.out.print("Nhap ten sinh vien (nhap q de thoat): ");
+                } else {
+                    System.out.print("Nhap ten sinh vien moi (Enter de giu nguyen [" + oldName + "], q de thoat: ");
+                }
                 name = sc.nextLine();
-                if(Objects.equals(name, "q")) return null;
-                if(validator.checkName(name)){
+                if (Objects.equals(name, "q")) return null;
+                else if (name.isEmpty()) {
+                    return oldName;
+                }
+                if (!(validator.checkName(name))) {
                     throw new IllegalArgumentException("Ten khong hop le !!!");
                 }
                 check = false;
@@ -57,22 +64,33 @@ public class InputHelper {
         return name;
     }
 
-    public String nhapGioiTinh(){
-        String gender = "";
+    public String nhapGioiTinh(String oldGender) {
         boolean check = true;
-        while(check){
+        String gender = "";
+        while (check) {
             try {
-                System.out.println("1. Nam");
-                System.out.println("2. Nu");
-                System.out.println("else: Unk");
-                System.out.print("Nhap gioi tinh (nhap q de thoat): ");
-                String choice = sc.nextLine();
-                if(choice.equals("q")) return null;
-                switch (choice){
-                    case "1" :gender = "Nam";
-                    case "2" :gender = "Nu";
-                    default: gender = "Unk";
+                if (!(oldGender == null || oldGender.isEmpty())) {
+                    System.out.println("1. Nam");
+                    System.out.println("2. Nu");
+                    System.out.println("else: Unk");
+                    System.out.print("Nhap gioi tinh moi (Enter de giu nguyen [" + oldGender + "], q de thoat: ");
+
+                } else {
+                    System.out.println("1. Nam");
+                    System.out.println("2. Nu");
+                    System.out.println("else: Unk");
+                    System.out.print("Nhap gioi tinh (nhap q de thoat): ");
                 }
+                String choice = sc.nextLine();
+                if (choice.equals("q")) return null;
+                else if (choice.isEmpty()) {
+                    return oldGender;
+                }
+                gender = switch (choice) {
+                    case "1" -> "Nam";
+                    case "2" -> "Nu";
+                    default -> "Unk";
+                };
                 check = false;
             } catch (Exception e) {
                 throw new IllegalArgumentException(e.getMessage());
@@ -82,17 +100,22 @@ public class InputHelper {
         return gender;
     }
 
-    public LocalDate nhapDob(){
-        Scanner sc = new Scanner(System.in);
-        String dob = "";
+    public LocalDate nhapDob(LocalDate oldDob) {
+        String dob;
         LocalDate dob1 = null;
         boolean check = true;
-        while(check){
-            try{
-                System.out.print("Nhap thang/nam/sinh (nhap q de thoat): ");
+        while (check) {
+            try {
+                if (oldDob == null) {
+                    System.out.print("Nhap thang/ngay/nam sinh (nhap q de thoat): ");
+                } else {
+                    System.out.print("Nhap thang/ngay/nam sinh moi (Enter de giu nguyen [" + oldDob + "], q de thoat: ");
+                }
                 dob = sc.nextLine();
-                if(Objects.equals(dob, "q")){
+                if (Objects.equals(dob, "q")) {
                     return null;
+                } else if (dob.isEmpty()) {
+                    return oldDob;
                 }
                 dob1 = LocalDate.parse(dob, formatter);
                 check = false;
@@ -102,38 +125,54 @@ public class InputHelper {
         }
         return dob1;
     }
-    public Double nhapGPA(){
+
+    public Double nhapGPA(Double oldGpa) {
         boolean check = true;
         double gpa = 0.0;
-            while(check) {
-                try {
-                    System.out.print("Nhap GPA (nhap q de thoat): ");
-                    gpa = Double.parseDouble(sc.nextLine());
-                    if(String.valueOf(gpa).equals("q")){
-                        return null;
-                    }
-                    if (gpa < 0 || gpa > 4) {
-                        throw new IllegalArgumentException("GPA khong the nho hon 0 va lon hon 4 !!!");
-                    }
-                    check = false;
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-
+        String tmp;
+        while (check) {
+            try {
+                if (oldGpa != null) {
+                    System.out.print("Nhap gpa moi (Enter de giu nguyen [" + oldGpa + "], q de thoat: ");
+                } else {
+                    System.out.print("Nhap gpa (nhap q de thoat): ");
                 }
+
+                tmp = sc.nextLine();
+                if (String.valueOf(tmp).equals("q")) {
+                    return null;
+                } else if (tmp.isEmpty()) {
+                    return oldGpa;
+                }
+                gpa = Double.parseDouble(tmp);
+                if (gpa < 0 || gpa > 4) {
+                    throw new IllegalArgumentException("Gpa khong the nho hon 0 va lon hon 4 !!!");
+                }
+                check = false;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
+        }
         return gpa;
     }
-    public String nhapEmail(){
+
+    public String nhapEmail(String oldEmail) {
         boolean check = true;
         String email = "";
-        while (check){
-            try{
-                System.out.print("Nhap email (nhap q de thoat): ");
-                email = sc.nextLine();
-                if(Objects.equals(email, "q")){
-                    return null;
+        while (check) {
+            try {
+                if (!(oldEmail == null || oldEmail.isEmpty())) {
+                    System.out.print("Nhap emai moi (Enter de giu nguyen [" + oldEmail + "], q de thoat: ");
+                } else {
+                    System.out.print("Nhap email (nhap q de thoat): ");
                 }
-                if(!(validator.checkEmail(email))){
+                email = sc.nextLine();
+                if (Objects.equals(email, "q")) {
+                    return null;
+                } else if (email.isEmpty()) {
+                    return oldEmail;
+                }
+                if (!(validator.checkEmail(email))) {
                     throw new IllegalArgumentException("Email khong dung dinh dang !!!");
                 }
                 check = false;
@@ -144,15 +183,22 @@ public class InputHelper {
         }
         return email;
     }
-    public String nhapPhone(){
+
+    public String nhapPhone(String oldPhone) {
         boolean check = true;
         String phone = "";
-        while(check) {
-            try{
-                System.out.print("Nhap so dien thoai (nhap q de thoat): ");
+        while (check) {
+            try {
+                if (!(oldPhone == null || oldPhone.isEmpty())) {
+                    System.out.print("Nhap so dien thoai moi (Enter de giu nguyen [" + oldPhone + "], q de thoat: ");
+                } else {
+                    System.out.print("Nhap so dien thoai (nhap q de thoat): ");
+                }
                 phone = sc.nextLine();
-                if(Objects.equals(phone, "q")){
+                if (Objects.equals(phone, "q")) {
                     return null;
+                } else if (phone.isEmpty()) {
+                    return oldPhone;
                 }
                 if (!(validator.checkPhone(phone))) {
                     throw new IllegalArgumentException("So dien thoai bat dau bang so 0 va co 10 chu so !!!");
@@ -163,6 +209,30 @@ public class InputHelper {
             }
         }
         return phone;
+    }
+
+    public String nhapMajor(String oldMajor) {
+        boolean check = true;
+        String major = "";
+        while (check) {
+            try {
+                if (!(oldMajor == null || oldMajor.isEmpty())) {
+                    System.out.print("Nhap chuyen nganh moi (Enter de giu nguyen [" + oldMajor + "], q de thoat: ");
+                } else {
+                    System.out.print("Nhap chuyen nganh (q de thoat): ");
+                }
+                major = sc.nextLine();
+                if (Objects.equals(major, "q")) {
+                    return null;
+                } else if (major.isEmpty()) {
+                    return oldMajor;
+                }
+                check = false;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return major;
     }
 
 }

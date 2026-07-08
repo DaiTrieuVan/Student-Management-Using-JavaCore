@@ -78,7 +78,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "Student: " +
                 "msv='" + msv + '\'' +
                 ", name='" + name + '\'' +
                 ", gender='" + gender + '\'' +
@@ -86,12 +86,12 @@ public class Student {
                 ", major='" + major + '\'' +
                 ", gpa=" + gpa +
                 ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
+                ", phone='" + phone + '\'';
     }
-    public static Student fromCSV(String csvLine){
+
+    public static Student fromCSV(String csvLine) {
         String[] parts = csvLine.split(",");
-        if(parts.length < 8){
+        if (parts.length < 8) {
             return null;
         }
         Student student = new Student();
@@ -106,7 +106,8 @@ public class Student {
         student.setPhone(parts[7].trim());
         return student;
     }
-    public String toCSV(){
+
+    public String toCSV() {
         java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("M/d/yyyy");
         return String.join(",",
                 msv != null ? msv : "",
