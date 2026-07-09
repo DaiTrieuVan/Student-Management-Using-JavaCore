@@ -57,8 +57,35 @@ public class StudentView {
         if (students.isEmpty()) {
             System.out.println("Danh sach sinh vien rong !!!");
         } else {
-            students.forEach(System.out::println); //Method Reference: Nghia la cu moi phan tu goi system.out.print;
+            System.out.println("\n--- DANH SACH SINH VIEN ---");
+            printStudentTable(students);
+            System.out.println();
         }
+    }
+
+    private void printStudentTable(List<Student> students) {
+        String rowSeparator = "+------------+---------------------------+------------+--------------+---------------------------+--------+---------------------------+-----------------+";
+        String headerFormat = "| %-10s | %-25s | %-10s | %-12s | %-25s | %-6s | %-25s | %-15s |%n";
+
+        System.out.println(rowSeparator);
+        System.out.printf(headerFormat, "Ma SV", "Ho va Ten", "Gioi Tinh", "Ngay Sinh", "Chuyen Nganh", "GPA", "Email", "So DT");
+        System.out.println(rowSeparator);
+
+        java.time.format.DateTimeFormatter dobFormatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        for (Student s : students) {
+            String msv = s.getMsv() != null ? s.getMsv() : "";
+            String name = s.getName() != null ? s.getName() : "";
+            String gender = s.getGender() != null ? s.getGender() : "";
+            String dob = s.getDob() != null ? s.getDob().format(dobFormatter) : "";
+            String major = s.getMajor() != null ? s.getMajor() : "";
+            String gpa = s.getGpa() != null ? String.format("%.2f", s.getGpa()) : "";
+            String email = s.getEmail() != null ? s.getEmail() : "";
+            String phone = s.getPhone() != null ? s.getPhone() : "";
+
+            System.out.printf(headerFormat, msv, name, gender, dob, major, gpa, email, phone);
+        }
+        System.out.println(rowSeparator);
     }
 
     public void addStudent() {
@@ -159,8 +186,11 @@ public class StudentView {
                 students = studentController.findStudentsbyName(name);
                 if (students.isEmpty()) {
                     System.out.println("Khong ton tai sinh vien co ten: " + name + " !!!");
+                } else {
+                    System.out.println("\n--- KET QUA TIM KIEM ---");
+                    printStudentTable(students);
+                    System.out.println();
                 }
-                students.forEach(System.out::println);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
