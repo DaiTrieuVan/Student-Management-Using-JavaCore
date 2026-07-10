@@ -170,6 +170,7 @@ public class StudentView {
                 if (msv.equals("q")) return;
                 studentController.deleteStudent(msv);
                 System.out.println("Xoa sinh vien co msv: " + msv + " thanh cong !!!");
+                printStudentTable(studentController.getAllStudents());
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }

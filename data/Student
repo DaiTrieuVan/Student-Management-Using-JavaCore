@@ -1,5 +1,5 @@
-studentId,name,gender,dob,major,gpa,email,phone
-SV001,Nguyen Van An,Nam,5/12/2004,Cong Nghe Thong Tin,3.45,an.nguyen@gmail.com,987654321
+studentId,name,gender,dob,clazzId,email,phone
+SV001,Nguyen Van An,Nam,5/12/2004,,an.nguyen@gmail.com,987654321
 SV002,Tran Thi Binh,Nu,11/20/2003,Ky Thuat Phan Mem,3.82,binh.tran@gmail.com,912345678
 SV003,Le Van Cuong,Nam,2/18/2004,Tri Tue Nhan Tao,3.15,cuong.le@gmail.com,903456789
 SV004,Pham Thu Ha,Nu,8/1/2003,He Thong Thong Tin,3.9,ha.pham@gmail.com,978123456
